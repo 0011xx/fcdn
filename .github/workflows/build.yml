@@ -1,0 +1,30 @@
+name: Build and Upload Artifacts
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Build Server
+        run: |
+          go build  serve.go
+          echo "Server built successfully!"
+          ls
+      
+      - name: Build Client
+        run: |
+          cd client
+          go build fcdn.go
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: server-and-client
+          path: |
+            ./server
+            ./client/fcdn
